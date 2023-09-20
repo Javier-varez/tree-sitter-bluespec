@@ -10,5 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "nan": "^2.18.0"
-  }
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.bsv",
+      "highlights": [
+        "queries/highlights.scm"
+      ]
+    }
+  ]
 }
