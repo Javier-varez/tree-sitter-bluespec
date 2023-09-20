@@ -38,6 +38,137 @@
     }
   },
   {
+    "type": "binaryExpression",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "!=",
+            "named": false
+          },
+          {
+            "type": "%",
+            "named": false
+          },
+          {
+            "type": "&",
+            "named": false
+          },
+          {
+            "type": "&&",
+            "named": false
+          },
+          {
+            "type": "*",
+            "named": false
+          },
+          {
+            "type": "+",
+            "named": false
+          },
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "/",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": "<<",
+            "named": false
+          },
+          {
+            "type": "<=",
+            "named": false
+          },
+          {
+            "type": "==",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": ">=",
+            "named": false
+          },
+          {
+            "type": ">>",
+            "named": false
+          },
+          {
+            "type": "^",
+            "named": false
+          },
+          {
+            "type": "^~",
+            "named": false
+          },
+          {
+            "type": "|",
+            "named": false
+          },
+          {
+            "type": "||",
+            "named": false
+          },
+          {
+            "type": "~^",
+            "named": false
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "condExpr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "pattern",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "exportDecl",
     "named": true,
     "fields": {},
@@ -57,6 +188,53 @@
     }
   },
   {
+    "type": "expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "binaryExpression",
+          "named": true
+        },
+        {
+          "type": "condExpr",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "intLiteral",
+          "named": true
+        },
+        {
+          "type": "realLiteral",
+          "named": true
+        },
+        {
+          "type": "stringLiteral",
+          "named": true
+        },
+        {
+          "type": "systemFunctionCall",
+          "named": true
+        },
+        {
+          "type": "unaryExpression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "importDecl",
     "named": true,
     "fields": {},
@@ -70,6 +248,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "intLiteral",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "interfaceDecl",
@@ -198,6 +381,252 @@
     }
   },
   {
+    "type": "moduleActualParamArg",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "moduleDef",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "moduleProto",
+          "named": true
+        },
+        {
+          "type": "moduleStmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "moduleFormalArgs",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "moduleFormalParam",
+    "named": true,
+    "fields": {
+      "ident": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "moduleInst",
+    "named": true,
+    "fields": {
+      "instanceIdent": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      },
+      "moduleIdent": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      },
+      "moduleType": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "moduleActualParamArg",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "moduleProto",
+    "named": true,
+    "fields": {
+      "formalArgs": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "moduleFormalArgs",
+            "named": true
+          }
+        ]
+      },
+      "formalParams": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "moduleFormalParam",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "provisos",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "moduleStmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "functionDef",
+          "named": true
+        },
+        {
+          "type": "functionStmt",
+          "named": true
+        },
+        {
+          "type": "methodDef",
+          "named": true
+        },
+        {
+          "type": "moduleInst",
+          "named": true
+        },
+        {
+          "type": "returnStmt",
+          "named": true
+        },
+        {
+          "type": "rule",
+          "named": true
+        },
+        {
+          "type": "subinterfaceDef",
+          "named": true
+        },
+        {
+          "type": "systemTaskStmt",
+          "named": true
+        },
+        {
+          "type": "varAssign",
+          "named": true
+        },
+        {
+          "type": "varDecl",
+          "named": true
+        },
+        {
+          "type": "varDeclDo",
+          "named": true
+        },
+        {
+          "type": "varDo",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "package",
     "named": true,
     "fields": {
@@ -259,6 +688,80 @@
     }
   },
   {
+    "type": "pattern",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "capitalIdent",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "intLiteral",
+          "named": true
+        },
+        {
+          "type": "structPattern",
+          "named": true
+        },
+        {
+          "type": "taggedUnionPattern",
+          "named": true
+        },
+        {
+          "type": "tuplePattern",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "proviso",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "capitalIdent",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "provisos",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "proviso",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "realLiteral",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "source_file",
     "named": true,
     "fields": {},
@@ -268,6 +771,29 @@
       "types": [
         {
           "type": "package",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "structPattern",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "capitalIdent",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "pattern",
           "named": true
         }
       ]
@@ -298,6 +824,45 @@
         },
         {
           "type": "typeDefType",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "systemFunctionCall",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "taggedUnionPattern",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "capitalIdent",
+          "named": true
+        },
+        {
+          "type": "pattern",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "tuplePattern",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "pattern",
           "named": true
         }
       ]
@@ -357,7 +922,109 @@
     }
   },
   {
+    "type": "unaryExpression",
+    "named": true,
+    "fields": {
+      "arg": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "!",
+            "named": false
+          },
+          {
+            "type": "&",
+            "named": false
+          },
+          {
+            "type": "+",
+            "named": false
+          },
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "^",
+            "named": false
+          },
+          {
+            "type": "^~",
+            "named": false
+          },
+          {
+            "type": "|",
+            "named": false
+          },
+          {
+            "type": "~",
+            "named": false
+          },
+          {
+            "type": "~&",
+            "named": false
+          },
+          {
+            "type": "~^",
+            "named": false
+          },
+          {
+            "type": "~|",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "!",
+    "named": false
+  },
+  {
+    "type": "!=",
+    "named": false
+  },
+  {
     "type": "#",
+    "named": false
+  },
+  {
+    "type": "#(",
+    "named": false
+  },
+  {
+    "type": "$stime",
+    "named": false
+  },
+  {
+    "type": "$time",
+    "named": false
+  },
+  {
+    "type": "%",
+    "named": false
+  },
+  {
+    "type": "&",
+    "named": false
+  },
+  {
+    "type": "&&",
+    "named": false
+  },
+  {
+    "type": "&&&",
     "named": false
   },
   {
@@ -389,7 +1056,27 @@
     "named": false
   },
   {
+    "type": "+",
+    "named": false
+  },
+  {
     "type": ",",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": ".",
+    "named": false
+  },
+  {
+    "type": ".*",
+    "named": false
+  },
+  {
+    "type": "/",
     "named": false
   },
   {
@@ -405,7 +1092,43 @@
     "named": false
   },
   {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "<-",
+    "named": false
+  },
+  {
+    "type": "<<",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
     "type": "=",
+    "named": false
+  },
+  {
+    "type": "==",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
+    "named": false
+  },
+  {
+    "type": ">>",
+    "named": false
+  },
+  {
+    "type": "?",
     "named": false
   },
   {
@@ -414,6 +1137,14 @@
   },
   {
     "type": "]",
+    "named": false
+  },
+  {
+    "type": "^",
+    "named": false
+  },
+  {
+    "type": "^~",
     "named": false
   },
   {
@@ -429,7 +1160,15 @@
     "named": true
   },
   {
+    "type": "clocked_by",
+    "named": false
+  },
+  {
     "type": "endinterface",
+    "named": false
+  },
+  {
+    "type": "endmodule",
     "named": false
   },
   {
@@ -441,7 +1180,11 @@
     "named": false
   },
   {
-    "type": "expression",
+    "type": "functionDef",
+    "named": true
+  },
+  {
+    "type": "functionStmt",
     "named": true
   },
   {
@@ -453,6 +1196,10 @@
     "named": false
   },
   {
+    "type": "int",
+    "named": false
+  },
+  {
     "type": "interface",
     "named": false
   },
@@ -461,12 +1208,20 @@
     "named": true
   },
   {
+    "type": "matches",
+    "named": false
+  },
+  {
     "type": "method",
     "named": false
   },
   {
-    "type": "moduleDef",
+    "type": "methodDef",
     "named": true
+  },
+  {
+    "type": "module",
+    "named": false
   },
   {
     "type": "numeric",
@@ -477,7 +1232,91 @@
     "named": false
   },
   {
+    "type": "parameter",
+    "named": false
+  },
+  {
+    "type": "provisos",
+    "named": false
+  },
+  {
+    "type": "reset_by",
+    "named": false
+  },
+  {
+    "type": "returnStmt",
+    "named": true
+  },
+  {
+    "type": "rule",
+    "named": true
+  },
+  {
+    "type": "stringLiteral",
+    "named": true
+  },
+  {
+    "type": "subinterfaceDef",
+    "named": true
+  },
+  {
+    "type": "systemTaskStmt",
+    "named": true
+  },
+  {
+    "type": "tagged",
+    "named": false
+  },
+  {
     "type": "type",
+    "named": false
+  },
+  {
+    "type": "varAssign",
+    "named": true
+  },
+  {
+    "type": "varDecl",
+    "named": true
+  },
+  {
+    "type": "varDeclDo",
+    "named": true
+  },
+  {
+    "type": "varDo",
+    "named": true
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "|",
+    "named": false
+  },
+  {
+    "type": "||",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
+  },
+  {
+    "type": "~",
+    "named": false
+  },
+  {
+    "type": "~&",
+    "named": false
+  },
+  {
+    "type": "~^",
+    "named": false
+  },
+  {
+    "type": "~|",
     "named": false
   }
 ]

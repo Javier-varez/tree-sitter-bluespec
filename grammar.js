@@ -1,9 +1,33 @@
+const PREC = {
+    condExpr: 1,
+    or: 2,
+    and: 3,
+    bitor: 4,
+    bitxnor: 5,
+    bitxor: 6,
+    bitand: 7,
+    equality: 8,
+    comparison: 9,
+    shift: 10,
+    addition: 11,
+    multiplication: 12,
+    unaryxnor: 13,
+    unaryxor: 14,
+    unarynor: 15,
+    unaryor: 16,
+    unarynand: 17,
+    unaryand: 18,
+    unaryplus: 19,
+};
+
 module.exports = grammar({
     name : 'Bluespec',
 
     extras : $ => [/\s/, $.line_comment, $.block_comment],
 
-    externals : $ => [$.block_comment],
+    externals : $ => [$.block_comment, $.stringLiteral],
+
+    word: $ => $.ident,
 
     rules : {
         source_file : $ => $.package,
@@ -36,12 +60,127 @@ module.exports = grammar({
                      seq(choice($.ident, $.capitalIdent),
                          optional(seq('=', $.expression))),
 
-        // TODO
-        expression : $ => 'expression',
+        // Expressions
+        expression : $ => choice($.condExpr, $._operatorExpr, $._exprPrimary),
+        condExpr : $ => prec(PREC.condExpr,
+                     seq(sepBy1('&&&', $._exprOrConditionPattern), '?',
+                         $.expression, ':', $.expression)),
+        _exprOrConditionPattern : $ => choice(
+                                    $.expression,
+                                    seq($.expression, 'matches', $.pattern)),
+        _exprPrimary : $ => choice(
+                         $.ident, $.realLiteral, $.intLiteral, $.stringLiteral,
+                         $.systemFunctionCall, seq('(', $.expression, ')'),
+                         '?' /* TODO: and more*/),
+        systemFunctionCall : $ => choice('$time', '$stime'),
 
-        // TODO
-        moduleDef : $ => 'modDef',
+        _operatorExpr : $ => choice($.binaryExpression, $.unaryExpression),
 
+        binaryExpression: $ => {
+            const table = [
+              [PREC.or, '||'],
+              [PREC.and, '&&'],
+              [PREC.bitor, '|'],
+              [PREC.bitxnor, choice('^~', '~^')],
+              [PREC.bitxor, '^'],
+              [PREC.bitand, '&'],
+              [PREC.equality, choice('==', '!=')],
+              [PREC.comparison, choice('<=', '>=', '<', '>')],
+              [PREC.shift, choice('<<', '>>')],
+              [PREC.addition, choice('+', '-')],
+              [PREC.multiplication, choice('*', '/', '%')],
+            ];
+
+            return choice(...table.map(([precedence, operator]) => prec.left(precedence, seq(
+              field('left', $.expression),
+              field('operator', operator),
+              field('right', $.expression),
+            ))));
+        },
+
+        unaryExpression: $ => {
+            const table = [
+              [PREC.unaryxnor, choice('^~', '~^')],
+              [PREC.unaryxor, '^'],
+              [PREC.unarynor, '~|'],
+              [PREC.unaryor, '|'],
+              [PREC.unarynand, '~&'],
+              [PREC.unaryand, '&'],
+              [PREC.unaryplus, choice('+', '-', '!', '~')],
+            ];
+
+            return choice(...table.map(([precedence, operator]) => prec.left(precedence, seq(
+              field('operator', operator),
+              field('arg', $.expression),
+            ))));
+        },
+
+        // Patterns
+        pattern : $ => choice(
+                    seq('.', $.ident), '.*', $.intLiteral, $.capitalIdent,
+                    $.taggedUnionPattern, $.structPattern, $.tuplePattern),
+        taggedUnionPattern : $ => seq('tagged', $.capitalIdent, $.pattern),
+        structPattern : $ =>
+                          seq('tagged', $.capitalIdent, '{',
+                              sepBy1(',', seq($.ident, ':', $.pattern)), '}'),
+        tuplePattern : $ => seq('{', sepBy1(',', $.pattern), '}'),
+
+        // Module definitions
+        moduleDef : $ =>
+                      seq($.moduleProto, repeat($.moduleStmt), 'endmodule',
+                          optional(seq(':', $.ident))),
+
+        moduleProto : $ => seq(
+                        'module', optional(seq('[', $.type, ']')),
+                        field('name', $.ident),
+                        optional(
+                            seq('#', '(',
+                                field(
+                                    'formalParams',
+                                    sepBy1(',', $.moduleFormalParam)),
+                                ')')),
+                        '(', optional(field('formalArgs', $.moduleFormalArgs)),
+                        ')', optional($.provisos), ';'),
+
+        moduleFormalParam : $ =>
+                              seq(optional('parameter'), field('type', $.type),
+                                  field('ident', $.ident)),
+        moduleFormalArgs : $ =>
+                             choice($.type, sepBy1(',', seq($.type, $.ident))),
+
+        // TODO module statements (If, Case, BeginEndStmt...)
+        moduleStmt : $ => choice(
+                       $.moduleInst, $.methodDef, $.subinterfaceDef, $.rule,
+                       $.varDecl, $.varAssign, $.varDo, $.varDeclDo,
+                       $.functionDef, $.functionStmt, $.systemTaskStmt,
+                       seq('(', $.expression, ')'), $.returnStmt),
+
+        // Module instantiation
+        moduleInst : $ => seq(field('moduleType', $.type), field('instanceIdent', $.ident), '<-', $._moduleApp,';'),
+        _moduleApp : $ => seq(
+                       field('moduleIdent', $.ident), '(', sepBy(',', $.moduleActualParamArg), ')'),
+        moduleActualParamArg : $ => choice(
+                                 $.expression, seq('clocked_by', $.expression),
+                                 seq('reset_by', $.expression)),
+
+        // TODO: All these
+        methodDef : $ => 'methodDef',
+        subinterfaceDef : $ => 'subinterfaceDef',
+        rule : $ => 'rule',
+        varDecl : $ => 'varDecl',
+        varAssign : $ => 'varAssign',
+        varDo : $ => 'varDo',
+        varDeclDo : $ => 'varDeclDo',
+        functionDef : $ => 'functionDef',
+        functionStmt : $ => 'functionStmt',
+        systemTaskStmt : $ => 'systemTaskStmt',
+        returnStmt : $ => 'returnStmt',
+
+        // provisos
+        provisos : $ => seq('provisos', '(', sepBy1(',', $.proviso), ')'),
+        proviso : $ => seq($.capitalIdent, '#(', sepBy1(',', $.type), ')'),
+
+        // Interface declarations
         interfaceDecl : $ =>
                           seq(optional($.attributeInstances), 'interface',
                               field('name', $.typeDefType), ';',
@@ -84,7 +223,8 @@ module.exports = grammar({
                          seq($.capitalIdent,
                              optional(seq('#', '(', sepBy(',', $.type), ')'))),
                          $._typeNat,
-                         seq('bit', '[', $._typeNat, ':', $._typeNat, ']')),
+                         seq('bit', '[', $._typeNat, ':', $._typeNat, ']'),
+                         'int'),
         _typeNat : $ => /[-+]?[0-9][0-9_]*/,
 
         // Int literals
@@ -115,12 +255,11 @@ module.exports = grammar({
         realLiteral : $ => choice(
                         /[0-9][0-9_]*(\.[0-9_]+)?[eE][-+]?[0-9_]+/,
                         /[0-9][0-9_]*\.[0-9_]*/),
-
     }
 });
 
 function sepBy1(sep, rule) {
-    return seq(rule, repeat(seq(sep, rule)));
+    return seq(rule, repeat(prec.left(seq(sep, rule))));
 }
 
 function sepBy(sep, rule) {
